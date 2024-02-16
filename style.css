@@ -11,7 +11,7 @@ body, html {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-image: url('cartoon-stars.gif'); /* Replace with the path to your GIF */
+    background-image: url('https://raw.githubusercontent.com/username/repository/branch/path/to/cartoon-stars.gif'); /* Replace with the path to your GIF */
     background-size: cover;
     background-position: center;
     z-index: -1; /* Ensures it stays in the background */
