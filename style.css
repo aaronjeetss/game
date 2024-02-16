@@ -9,14 +9,7 @@ body, html {
 #gameContainer {
     width: 600px;
     height: 400px;
-    position: relative; /* This is crucial */
-    margin: 0 auto; /* Center the container */
+    position: relative;
+    margin: 20px auto;
     background-color: #111;
-}
-
-#spaceship {
-    position: absolute; /* Make sure this is set */
-    width: 50px; /* Set a specific width */
-    height: 50px; /* Set a specific height */
-    /* Remove bottom and transform properties if they were previously set */
 }
