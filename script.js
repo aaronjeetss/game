@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let targetX = 0, targetY = 0;
     let currentX = window.innerWidth / 2, currentY = window.innerHeight / 2;
     let angle = 0;
+    let lastDx = 0, lastDy = 0; // Keep track of the last differences
 
     document.addEventListener('mousemove', (e) => {
         targetX = e.clientX;
@@ -19,8 +20,13 @@ document.addEventListener('DOMContentLoaded', () => {
             currentY += dy * 0.05;
         }
 
-        // Calculate rotation
-        angle = Math.atan2(dy, dx) * (180 / Math.PI);
+        // Only update rotation if there's significant mouse movement
+        if (Math.abs(dx - lastDx) > 0.1 || Math.abs(dy - lastDy) > 0.1) {
+            // Calculate rotation
+            angle = Math.atan2(dy, dx) * (180 / Math.PI);
+            lastDx = dx; // Update last differences
+            lastDy = dy;
+        }
 
         // Apply updated position and rotation
         spaceship.style.left = `${currentX}px`;
