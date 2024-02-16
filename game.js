@@ -1,23 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const gameContainer = document.getElementById('gameContainer');
     const spaceship = document.getElementById('spaceship');
 
-    document.addEventListener('keydown', (e) => {
-        if (e.code === 'Space') {
-            spaceship.src = 'images/spaceship-boosters.png'; // Change to boosters image
-            moveSpaceship();
-        }
-    });
+    gameContainer.addEventListener('mousemove', (e) => {
+        // Get the mouse position relative to the gameContainer
+        const rect = gameContainer.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
 
-    document.addEventListener('keyup', (e) => {
-        if (e.code === 'Space') {
-            spaceship.src = 'images/spaceship.png'; // Change back to normal image
-        }
+        // Position the spaceship to follow the mouse cursor
+        // The spaceship's center aligns with the cursor
+        const spaceshipWidth = spaceship.offsetWidth;
+        const spaceshipHeight = spaceship.offsetHeight;
+        spaceship.style.left = `${mouseX - spaceshipWidth / 2}px`;
+        spaceship.style.top = `${mouseY - spaceshipHeight / 2}px`;
     });
-
-    function moveSpaceship() {
-        let position = parseInt(window.getComputedStyle(spaceship).bottom);
-        position += 10; // Move up by 10px
-        spaceship.style.bottom = `${position}px`;
-    }
 });
 
