@@ -14,14 +14,11 @@ body, html {
     background-color: #111;
 }
 
-#spaceship {
-    all: unset;
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 10vw; /* Dynamic resizing based on viewport width */
+ #spaceship {
+    position: fixed; /* Allows movement across the whole screen */
+    width: 10vw; /* Adjust size as needed */
     max-width: 100px; /* Maximum size */
-    min-width: 50px; /* Minimum size to ensure it's not too small */
-    z-index: 1000; /* Ensures it's above other content, adjust as necessary */
+    min-width: 50px; /* Minimum size */
+    z-index: 1000; /* Keep it above other content */
+    pointer-events: none; /* Prevents the spaceship from capturing mouse events */
 }
