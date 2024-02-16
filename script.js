@@ -1,28 +1,30 @@
 document.addEventListener('DOMContentLoaded', () => {
     const spaceship = document.getElementById('spaceship');
-    let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
+    let mouseX = 0, mouseY = 0;
 
-    document.addEventListener('mousemove', function(e) {
-        // Set the target position to the mouse position
-        targetX = e.clientX;
-        targetY = e.clientY;
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
     });
 
-    function moveSpaceship() {
-        // Calculate the difference between current and target positions
-        const dx = (targetX - currentX) * 0.1; // Movement speed
-        const dy = (targetY - currentY) * 0.1; // Movement speed
+    const followCursor = () => {
+        // Calculate the difference between current position and target (mouse) position
+        const rect = spaceship.getBoundingClientRect();
+        const currentX = rect.left + rect.width / 2;
+        const currentY = rect.top + rect.height / 2;
+        
+        const dx = mouseX - currentX;
+        const dy = mouseY - currentY;
 
-        // Update current positions
-        currentX += dx;
-        currentY += dy;
+        // Update spaceship position to follow cursor, adjust '0.05' to control the speed
+        const targetX = currentX + dx * 0.05;
+        const targetY = currentY + dy * 0.05;
 
-        // Apply the position to the spaceship with some boundaries
-        spaceship.style.left = currentX + 'px';
-        spaceship.style.top = currentY + 'px';
+        // Apply the position, adjusting for the centering transform
+        spaceship.style.transform = `translate(-50%, -50%) translate(${targetX}px, ${targetY}px)`;
 
-        requestAnimationFrame(moveSpaceship);
-    }
+        requestAnimationFrame(followCursor);
+    };
 
-    moveSpaceship();
+    followCursor(); // Start the following behavior
 });
