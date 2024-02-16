@@ -2,15 +2,24 @@ body, html {
     margin: 0;
     padding: 0;
     height: 100%;
-    overflow: hidden; /* Optional: Prevent scrolling if the content exceeds the viewport */
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+}
+
+#gameContainer {
+    width: 600px;
+    height: 400px;
+    position: relative;
+    overflow: hidden;
+    background-color: #111;
 }
 
 #spaceship {
     position: absolute;
-    width: 64px; /* Adjust based on your image size */
-    height: 64px; /* Adjust based on your image size */
-    background-image: url('images/spaceship.png'); /* Update the path */
-    background-size: cover;
-    top: 100px; /* Initial position */
-    left: 100px; /* Initial position */
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
 }
