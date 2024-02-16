@@ -3,9 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let targetX = 0, targetY = 0;
     let currentX = window.innerWidth / 2, currentY = window.innerHeight / 2;
     let angle = 0;
-    let lastDx = 0, lastDy = 0; // Keep track of the last differences
+    let moving = false; // Flag to indicate if the mouse is moving
 
     document.addEventListener('mousemove', (e) => {
+        moving = true; // Set moving to true whenever the mouse moves
         targetX = e.clientX;
         targetY = e.clientY;
     });
@@ -18,20 +19,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
             currentX += dx * 0.05;
             currentY += dy * 0.05;
+            moving = false; // Reset moving flag as the spaceship is catching up to the mouse position
         }
 
-        // Only update rotation if there's significant mouse movement
-        if (Math.abs(dx - lastDx) > 0.1 || Math.abs(dy - lastDy) > 0.1) {
-            // Calculate rotation
+        // Always calculate the angle if there was recent movement
+        if (moving || Math.abs(dx) > 1 || Math.abs(dy) > 1) {
             angle = Math.atan2(dy, dx) * (180 / Math.PI);
-            lastDx = dx; // Update last differences
-            lastDy = dy;
         }
 
         // Apply updated position and rotation
         spaceship.style.left = `${currentX}px`;
         spaceship.style.top = `${currentY}px`;
-        // Rotate around the center; adjust if your image's "nose" is not at the center
         spaceship.style.transform = `rotate(${angle + 90}deg)`;
 
         requestAnimationFrame(updateSpaceship);
@@ -39,3 +37,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateSpaceship();
 });
+
