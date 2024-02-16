@@ -1,15 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
     const spaceship = document.getElementById('spaceship');
-    let targetX = 0, targetY = 0;
-    let currentX = window.innerWidth / 2, currentY = window.innerHeight / 2;
+    let targetX = window.innerWidth / 2, targetY = window.innerHeight / 2;
+    let currentX = targetX, currentY = targetY;
     let angle = 0;
-    let moving = false; // Flag to indicate if the mouse is moving
-    const safeDistance = 100; // Safe distance from the mouse pointer
+    const avoidanceRadius = 100; // Distance within which the spaceship tries to avoid the cursor
 
     document.addEventListener('mousemove', (e) => {
-        moving = true; // Set moving to true whenever the mouse moves
-        targetX = e.clientX;
-        targetY = e.clientY;
+        const dx = e.clientX - currentX;
+        const dy = e.clientY - currentY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        // If the cursor is within the avoidance radius, set the target to move in the opposite direction
+        if (distance < avoidanceRadius) {
+            const escapeAngle = Math.atan2(dy, dx);
+            // Calculate the target position to move away from the cursor
+            targetX = currentX - Math.cos(escapeAngle) * avoidanceRadius;
+            targetY = currentY - Math.sin(escapeAngle) * avoidanceRadius;
+        } else {
+            // Move normally towards the cursor if outside the avoidance radius
+            targetX = e.clientX;
+            targetY = e.clientY;
+        }
     });
 
     function updateSpaceship() {
@@ -17,21 +28,14 @@ document.addEventListener('DOMContentLoaded', () => {
         let dy = targetY - currentY;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-        // Update position if there is a noticeable distance to cover
-        if (distance > safeDistance) {
-            const ratio = (distance - safeDistance) / distance;
-            dx *= ratio;
-            dy *= ratio;
-
-            currentX += dx * 0.05;
-            currentY += dy * 0.05;
+        if (distance > 1) {
+            // Apply easing for smoother movement
+            currentX += dx * 0.1;
+            currentY += dy * 0.1;
         }
 
-        // Always calculate the angle if there was recent movement
-        if (moving || distance > safeDistance) {
-            angle = Math.atan2(dy, dx) * (180 / Math.PI);
-            moving = false; // Consider the spaceship as having caught up
-        }
+        // Calculate and update the angle regardless of the distance
+        angle = Math.atan2(dy, dx) * (180 / Math.PI);
 
         // Apply updated position and rotation
         spaceship.style.left = `${currentX}px`;
