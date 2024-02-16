@@ -1,31 +1,32 @@
 document.addEventListener('DOMContentLoaded', () => {
     const spaceship = document.getElementById('spaceship');
-    let targetX = 0, targetY = 0; // Cursor target position
-    let currentX = 0, currentY = 0; // Current spaceship position
-
-    // Correctly set the initial position of the spaceship
-    spaceship.style.transformOrigin = 'top right'; // Adjust rotation origin to top right
+    let targetX = 0, targetY = 0;
+    let currentX = window.innerWidth / 2, currentY = window.innerHeight / 2;
+    let angle = 0;
 
     document.addEventListener('mousemove', (e) => {
-        // Update target to mouse position
         targetX = e.clientX;
         targetY = e.clientY;
     });
 
     function updateSpaceship() {
-        // Calculate distance to move
-        const dx = (targetX - currentX);
-        const dy = (targetY - currentY);
+        const dx = targetX - currentX;
+        const dy = targetY - currentY;
 
-        // Update position more smoothly
-        currentX += dx * 0.05; // Adjust speed as needed
-        currentY += dy * 0.05;
+        // Update position if there is a noticeable distance to cover
+        if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+            currentX += dx * 0.05;
+            currentY += dy * 0.05;
+        }
 
-        // Calculate angle of rotation towards cursor
-        const angle = Math.atan2(dy - 50, dx - 50) * (180 / Math.PI); // Offset by spaceship dimensions
+        // Calculate rotation
+        angle = Math.atan2(dy, dx) * (180 / Math.PI);
 
-        // Apply rotation and position
-        spaceship.style.transform = `translate(${currentX - 50}px, ${currentY - 50}px) rotate(${angle}deg)`;
+        // Apply updated position and rotation
+        spaceship.style.left = `${currentX}px`;
+        spaceship.style.top = `${currentY}px`;
+        // Rotate around the center; adjust if your image's "nose" is not at the center
+        spaceship.style.transform = `rotate(${angle + 90}deg)`;
 
         requestAnimationFrame(updateSpaceship);
     }
