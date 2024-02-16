@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function moveSpaceship() {
         // Calculate the difference between current and target positions
-        const dx = (targetX - currentX) * 000000000000000000000.1; // Movement speed
-        const dy = (targetY - currentY) * 000000000000000000000.1; // Movement speed
+        const dx = (targetX - currentX) * 0.1; // Movement speed
+        const dy = (targetY - currentY) * 0.1; // Movement speed
 
         // Update current positions
         currentX += dx;
