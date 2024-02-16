@@ -5,14 +5,12 @@ body, html {
     overflow: hidden; /* Optional: Prevent scrolling if the content exceeds the viewport */
 }
 
-.background-box {
-    position: fixed; /* Use absolute if you need the game content to scroll */
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-image: url('https://raw.githubusercontent.com/username/repository/branch/path/to/cartoon-stars.gif'); /* Replace with the path to your GIF */
+#spaceship {
+    position: absolute;
+    width: 64px; /* Adjust based on your image size */
+    height: 64px; /* Adjust based on your image size */
+    background-image: url('spaceship.png'); /* Your spaceship image */
     background-size: cover;
-    background-position: center;
-    z-index: -1; /* Ensures it stays in the background */
+    top: 100px; /* Initial position */
+    left: 100px; /* Initial position */
 }
