@@ -7,18 +7,20 @@ body, html {
 }
 
 #gameContainer {
-    width: 600px;
-    height: 400px;
-    position: relative;
-    margin: 20px auto;
+    width: 100vw; /* Viewport width */
+    height: 100vh; /* Viewport height */
+    position: fixed; /* Cover the entire screen */
+    top: 0;
+    left: 0;
     background-color: #111;
+    overflow: hidden; /* Prevent scrolling */
 }
 
- #spaceship {
-    position: fixed; /* Allows movement across the whole screen */
-    width: 10vw; /* Adjust size as needed */
+#spaceship {
+    position: absolute; /* Positioned absolutely within the gameContainer */
+    width: 10vw; /* Dynamic resizing based on viewport width */
     max-width: 100px; /* Maximum size */
-    min-width: 50px; /* Minimum size */
-    z-index: 1000; /* Keep it above other content */
-    pointer-events: none; /* Prevents the spaceship from capturing mouse events */
+    min-width: 50px; /* Minimum size to ensure it's not too small */
+    z-index: 1000; /* Ensures it's above other content */
+    pointer-events: none; /* Allows clicks to pass through */
 }
