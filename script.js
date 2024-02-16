@@ -2,38 +2,56 @@ document.addEventListener('DOMContentLoaded', () => {
     const spaceship = document.getElementById('spaceship');
     let mouseX = 0, mouseY = 0;
     let currentX = window.innerWidth / 2, currentY = window.innerHeight / 2;
-    let velocityX = 0, velocityY = 0;
-    let angle = 0;
+    let angle = 0, targetAngle = 0, rotationStep = 0;
     const safeDistance = 100; // Safe distance to maintain from the cursor
-    const damping = 0.05; // Damping factor for smooth transitions
+    const lerpFactor = 0.1; // Adjust for smoother movement
+    const rotationLerpFactor = 0.05; // Smoother rotation adjustment
 
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
     });
 
+    function lerp(start, end, factor) {
+        return (1 - factor) * start + factor * end;
+    }
+
+    function shortestAngleDist(a0, a1) {
+        const max = Math.PI * 2;
+        const da = (a1 - a0) % max;
+        return 2 * da % max - da;
+    }
+
+    function toRadians(angle) {
+        return angle * (Math.PI / 180);
+    }
+
+    function toDegrees(angle) {
+        return angle * (180 / Math.PI);
+    }
+
     function updateSpaceship() {
         let dx = mouseX - currentX;
         let dy = mouseY - currentY;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        const direction = Math.atan2(dy, dx);
 
+        // Calculate the direction to the cursor
+        targetAngle = Math.atan2(dy, dx);
+        let currentAngleRadians = toRadians(angle);
+        
+        // Calculate the shortest way to rotate towards the target angle
+        rotationStep = shortestAngleDist(currentAngleRadians, targetAngle);
+        angle += toDegrees(rotationStep) * rotationLerpFactor;
+        
         if (distance < safeDistance) {
-            // Apply a force to move the spaceship away from the cursor
-            dx -= Math.cos(direction) * safeDistance;
-            dy -= Math.sin(direction) * safeDistance;
+            // If too close, move away smoothly
+            dx = -dx;
+            dy = -dy;
         }
 
-        // Calculate velocity for smooth movement
-        velocityX += (dx - velocityX) * damping;
-        velocityY += (dy - velocityY) * damping;
-
-        // Update position based on velocity
-        currentX += velocityX * damping;
-        currentY += velocityY * damping;
-
-        // Smoothly update the angle for rotation
-        angle = direction * (180 / Math.PI);
+        // Update position smoothly
+        currentX += dx * lerpFactor;
+        currentY += dy * lerpFactor;
 
         // Apply updated position and rotation
         spaceship.style.left = `${currentX}px`;
@@ -42,9 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         requestAnimationFrame(updateSpaceship);
     }
-
-    updateSpaceship();
-});
 
     updateSpaceship();
 });
