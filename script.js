@@ -1,40 +1,38 @@
 document.addEventListener('DOMContentLoaded', () => {
     const spaceship = document.getElementById('spaceship');
-    let targetX = window.innerWidth / 2, targetY = window.innerHeight / 2;
-    let currentX = targetX, currentY = targetY;
+    let mouseX = 0, mouseY = 0;
+    let currentX = window.innerWidth / 2, currentY = window.innerHeight / 2;
     let angle = 0;
-    const avoidanceRadius = 100; // Distance within which the spaceship tries to avoid the cursor
+    const safeDistance = 100; // Safe distance to maintain from the cursor
 
     document.addEventListener('mousemove', (e) => {
-        const dx = e.clientX - currentX;
-        const dy = e.clientY - currentY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        // If the cursor is within the avoidance radius, set the target to move in the opposite direction
-        if (distance < avoidanceRadius) {
-            const escapeAngle = Math.atan2(dy, dx);
-            // Calculate the target position to move away from the cursor
-            targetX = currentX - Math.cos(escapeAngle) * avoidanceRadius;
-            targetY = currentY - Math.sin(escapeAngle) * avoidanceRadius;
-        } else {
-            // Move normally towards the cursor if outside the avoidance radius
-            targetX = e.clientX;
-            targetY = e.clientY;
-        }
+        mouseX = e.clientX;
+        mouseY = e.clientY;
     });
 
     function updateSpaceship() {
-        let dx = targetX - currentX;
-        let dy = targetY - currentY;
+        let dx = mouseX - currentX;
+        let dy = mouseY - currentY;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distance > 1) {
-            // Apply easing for smoother movement
-            currentX += dx * 0.1;
-            currentY += dy * 0.1;
+        if (distance < safeDistance) {
+            // If the cursor is too close, move the spaceship away from the cursor
+            dx = -dx;
+            dy = -dy;
         }
 
-        // Calculate and update the angle regardless of the distance
+        // Normalize dx and dy to move the spaceship at a constant speed
+        const length = Math.sqrt(dx * dx + dy * dy);
+        if (length > 0) {
+            dx /= length;
+            dy /= length;
+        }
+
+        // Update spaceship position, moving slower for smoother animation
+        currentX += dx * 2; // Adjust speed as necessary
+        currentY += dy * 2; // Adjust speed as necessary
+
+        // Calculate and update the angle for the spaceship to face towards or away from the cursor
         angle = Math.atan2(dy, dx) * (180 / Math.PI);
 
         // Apply updated position and rotation
@@ -47,3 +45,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateSpaceship();
 });
+
