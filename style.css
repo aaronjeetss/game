@@ -1,0 +1,18 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden; /* Optional: Prevent scrolling if the content exceeds the viewport */
+}
+
+.background-box {
+    position: fixed; /* Use absolute if you need the game content to scroll */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('cartoon-stars.gif'); /* Replace with the path to your GIF */
+    background-size: cover;
+    background-position: center;
+    z-index: -1; /* Ensures it stays in the background */
+}
