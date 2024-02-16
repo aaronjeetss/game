@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const spaceship = document.getElementById('spaceship');
-    let targetX = 0, targetY = 0; // Target positions initialized to 0
-    let currentX = 0, currentY = 0; // Current positions initialized to 0
-    let dx = 0, dy = 0; // Differences in positions
+    let targetX = window.innerWidth / 2, targetY = window.innerHeight / 2; // Center initially
+    let currentX = targetX, currentY = targetY; // Start at the center
+    let lastFrameTime = Date.now();
 
     // Update the target position on mouse move
     document.addEventListener('mousemove', (e) => {
@@ -11,22 +11,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function moveSpaceship() {
-        // Calculate the difference between the target and current positions
-        dx = (targetX - currentX) * 0.000001; // Adjust the 0.01 to control the speed
-        dy = (targetY - currentY) * 0.000001; // Smaller values for slower movement
+        const now = Date.now();
+        const elapsed = now - lastFrameTime;
+        const moveSpeed = 0.05; // Control the speed, lower is slower
 
-        // Update current positions
-        currentX += dx;
-        currentY += dy;
+        if (elapsed > (1000 / 60)) { // 60 fps
+            const dx = (targetX - currentX) * moveSpeed;
+            const dy = (targetY - currentY) * moveSpeed;
 
-        // Apply the updated positions to the spaceship
-        spaceship.style.left = `${currentX}px`;
-        spaceship.style.top = `${currentY}px`;
+            currentX += dx;
+            currentY += dy;
 
-        // Continue the animation
+            // Apply the updated positions to the spaceship
+            spaceship.style.left = `${currentX}px`;
+            spaceship.style.top = `${currentY}px`;
+
+            // Rotate spaceship to face cursor
+            const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+            spaceship.style.transform = `rotate(${angle + 90}deg)`; // +90 to adjust rotation
+
+            lastFrameTime = now;
+        }
+
         requestAnimationFrame(moveSpaceship);
     }
 
-    // Start the movement
     moveSpaceship();
 });
