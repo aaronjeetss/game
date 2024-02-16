@@ -9,7 +9,7 @@ body, html {
     position: absolute;
     width: 64px; /* Adjust based on your image size */
     height: 64px; /* Adjust based on your image size */
-    background-image: url('spaceship.png'); /* Your spaceship image */
+    background-image: url('images/spaceship.png'); /* Update the path */
     background-size: cover;
     top: 100px; /* Initial position */
     left: 100px; /* Initial position */
