@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function moveSpaceship() {
         // Calculate the difference between the target and current positions
-        dx = (targetX - currentX) * 0.01; // Adjust the 0.01 to control the speed
-        dy = (targetY - currentY) * 0.01; // Smaller values for slower movement
+        dx = (targetX - currentX) * 0.000001; // Adjust the 0.01 to control the speed
+        dy = (targetY - currentY) * 0.000001; // Smaller values for slower movement
 
         // Update current positions
         currentX += dx;
