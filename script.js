@@ -1,30 +1,33 @@
 document.addEventListener('DOMContentLoaded', () => {
     const spaceship = document.getElementById('spaceship');
-    let mouseX = 0, mouseY = 0;
+    // Initial spaceship position
+    let posX = window.innerWidth / 2, posY = window.innerHeight / 2;
+    // Move spaceship to the initial position
+    spaceship.style.left = `${posX}px`;
+    spaceship.style.top = `${posY}px`;
 
     document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
+        // Target mouse position
+        const targetX = e.clientX;
+        const targetY = e.clientY;
+
+        // Function to move spaceship towards the mouse position
+        const moveSpaceship = () => {
+            // Calculate difference between current and target positions
+            const dx = targetX - posX;
+            const dy = targetY - posY;
+
+            // Update current position
+            posX += dx * 0.01; // Adjust the multiplier to change speed
+            posY += dy * 0.01;
+
+            // Apply updated position
+            spaceship.style.left = `${posX}px`;
+            spaceship.style.top = `${posY}px`;
+
+            requestAnimationFrame(moveSpaceship);
+        };
+
+        moveSpaceship();
     });
-
-    const followCursor = () => {
-        // Calculate the difference between current position and target (mouse) position
-        const rect = spaceship.getBoundingClientRect();
-        const currentX = rect.left + rect.width / 2;
-        const currentY = rect.top + rect.height / 2;
-        
-        const dx = mouseX - currentX;
-        const dy = mouseY - currentY;
-
-        // Update spaceship position to follow cursor, adjust '0.05' to control the speed
-        const targetX = currentX + dx * 0.05;
-        const targetY = currentY + dy * 0.05;
-
-        // Apply the position, adjusting for the centering transform
-        spaceship.style.transform = `translate(-50%, -50%) translate(${targetX}px, ${targetY}px)`;
-
-        requestAnimationFrame(followCursor);
-    };
-
-    followCursor(); // Start the following behavior
 });
