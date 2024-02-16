@@ -6,19 +6,19 @@ document.addEventListener('keydown', function(event) {
     switch(event.keyCode) {
         case 37: // Left arrow
             left -= 10;
-            spaceship.style.backgroundImage = "url('spaceship-boosters.png')"; // Moving left
+            spaceship.style.backgroundImage = "url('images/spaceship-boosters.png')"; // Moving left
             break;
         case 38: // Up arrow
             top -= 10;
-            spaceship.style.backgroundImage = "url('spaceship-boosters.png')"; // Moving up
+            spaceship.style.backgroundImage = "url('images/spaceship-boosters.png')"; // Moving up
             break;
         case 39: // Right arrow
             left += 10;
-            spaceship.style.backgroundImage = "url('spaceship-boosters.png')"; // Moving right
+            spaceship.style.backgroundImage = "url('images/spaceship-boosters.png')"; // Moving right
             break;
         case 40: // Down arrow
             top += 10;
-            spaceship.style.backgroundImage = "url('spaceship-boosters.png')"; // Moving down
+            spaceship.style.backgroundImage = "url('images/spaceship-boosters.png')"; // Moving down
             break;
     }
 
@@ -29,5 +29,5 @@ document.addEventListener('keydown', function(event) {
 document.addEventListener('keyup', function() {
     // Change back to the spaceship image without boosters when keys are released
     const spaceship = document.getElementById('spaceship');
-    spaceship.style.backgroundImage = "url('spaceship.png')";
+    spaceship.style.backgroundImage = "url('images/spaceship.png')";
 });
