@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to update spaceship's position and rotation smoothly
     const updatePositionAndRotation = () => {
         // Gradually move the spaceship towards the target position
-        currentX += (targetX - currentX) * 0.05; // Slow movement towards target X
-        currentY += (targetY - currentY) * 0.05; // Slow movement towards target Y
+        currentX += (targetX - currentX) * 0.005; // Slow movement towards target X
+        currentY += (targetY - currentY) * 0.005; // Slow movement towards target Y
 
         // Calculate angle to rotate spaceship towards cursor
         const angleRad = Math.atan2(targetY - currentY, targetX - (currentX + spaceshipWidth / 2));
