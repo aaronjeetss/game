@@ -4,45 +4,27 @@ document.addEventListener('DOMContentLoaded', () => {
     let mouseX = 0, mouseY = 0;
     let currentX = window.innerWidth / 2, currentY = window.innerHeight / 2;
     let angle = 0, targetAngle = 0;
-    const safeDistance = 100; // Safe distance to maintain from the cursor
-    const lerpFactor = 0.1; // Adjust for smoother movement
-    const rotationLerpFactor = 0.2; // Increased for faster rotation adjustment
-    const movementThreshold = 0.5; // Threshold for movement update
-    const rotationThreshold = 0.1; // Threshold for rotation update in degrees
-    // Define hoop characteristics and collision detection parameters
+    const safeDistance = 100;
+    const lerpFactor = 0.1;
+    const rotationLerpFactor = 0.2;
+    const movementThreshold = 0.5;
+    const rotationThreshold = 0.1;
     const hoopCenterX = hoop.offsetLeft + hoop.offsetWidth / 2;
     const hoopCenterY = hoop.offsetTop + hoop.offsetHeight / 2;
-    const hoopRadius = 50; // Effective radius for the hoop's center area
-    const collisionBuffer = 15; // Defines a buffer zone for the collision detection
+    const hoopRadius = 50; // Adjust based on the visual center area of the hoop
+    const collisionBuffer = 5; // Narrower passable area for increased difficulty
 
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
     });
 
-    function lerp(start, end, factor) {
-        return (1 - factor) * start + factor * end;
-    }
-
-    function shortestAngleDist(a0, a1) {
-        const max = Math.PI * 2;
-        const da = (a1 - a0) % max;
-        return 2 * da % max - da;
-    }
-
-    function toRadians(angle) {
-        return angle * (Math.PI / 180);
-    }
-
-    function toDegrees(angle) {
-        return angle * (180 / Math.PI);
-    }
+    // Existing helper functions (lerp, shortestAngleDist, toRadians, toDegrees)
 
     function checkCollisionWithHoop(x, y) {
         const dx = x - hoopCenterX;
         const dy = y - hoopCenterY;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        // Adjust these values based on the actual size of your hoop image and desired behavior
         if (distance < hoopRadius + collisionBuffer && distance > hoopRadius - collisionBuffer) {
             return 'bounce';
         } else if (distance <= hoopRadius - collisionBuffer) {
@@ -72,9 +54,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const collision = checkCollisionWithHoop(currentX, currentY);
         if (collision === 'bounce') {
-            // Implement bouncing effect by reversing direction and reducing the magnitude
-            currentX -= dx * 0.2;
-            currentY -= dy * 0.2;
+            // Smoother bounce effect with damping
+            const bounceFactor = 0.05; // Reduce for a softer bounce
+            dx *= -bounceFactor;
+            dy *= -bounceFactor;
+            currentX += dx;
+            currentY += dy;
         }
 
         spaceship.style.left = `${currentX}px`;
