@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let angle = 0, targetAngle = 0, rotationStep = 0;
     const safeDistance = 100; // Safe distance to maintain from the cursor
     const lerpFactor = 0.1; // Adjust for smoother movement
-    const rotationLerpFactor = 0.05; // Smoother rotation adjustment
+    const rotationLerpFactor = 0.2; // Increased for faster rotation adjustment
 
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
@@ -41,17 +41,22 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Calculate the shortest way to rotate towards the target angle
         rotationStep = shortestAngleDist(currentAngleRadians, targetAngle);
-        angle += toDegrees(rotationStep) * rotationLerpFactor;
-        
-        if (distance < safeDistance) {
-            // If too close, move away smoothly
-            dx = -dx;
-            dy = -dy;
-        }
+        let rotationDelta = toDegrees(rotationStep) * rotationLerpFactor;
 
-        // Update position smoothly
-        currentX += dx * lerpFactor;
-        currentY += dy * lerpFactor;
+        // Check if movement or rotation needs updating
+        if (Math.abs(rotationDelta) > 0.01 || distance > 1) {
+            angle += rotationDelta;
+
+            if (distance < safeDistance) {
+                // If too close, move away smoothly
+                dx = -dx;
+                dy = -dy;
+            }
+
+            // Update position smoothly
+            currentX += dx * lerpFactor;
+            currentY += dy * lerpFactor;
+        }
 
         // Apply updated position and rotation
         spaceship.style.left = `${currentX}px`;
