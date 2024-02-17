@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const collision = checkCollisionWithHoop(currentX, currentY);
         if (collision === 'bounce') {
             // Smoother bounce effect with damping
-            const bounceFactor = 0.05; // Reduce for a softer bounce
+            const bounceFactor = 0.5; // Reduce for a softer bounce
             dx *= -bounceFactor;
             dy *= -bounceFactor;
             currentX += dx;
