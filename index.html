@@ -1,13 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Spaceship Follow Cursor</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <img src="images/spaceship.png" id="spaceship" alt="Spaceship">
-    <img src="images/hoop.png" id="hoop" alt="Hoop">
-    <script src="script.js"></script>
-</body>
-</html>
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+#spaceship {
+    position: absolute;
+    width: 50px; /* Adjust based on your image size */
+    height: auto;
+    pointer-events: none; /* Ignore mouse events */
+}
