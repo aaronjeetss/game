@@ -4,15 +4,16 @@ document.addEventListener('DOMContentLoaded', () => {
     let mouseX = 0, mouseY = 0;
     let currentX = window.innerWidth / 2, currentY = window.innerHeight / 2;
     let angle = 0, targetAngle = 0;
-    const safeDistance = 100;
     const lerpFactor = 0.1;
     const rotationLerpFactor = 0.2;
-    const movementThreshold = 0.5;
-    const rotationThreshold = 0.1;
+
     const hoopCenterX = hoop.offsetLeft + hoop.offsetWidth / 2;
     const hoopCenterY = hoop.offsetTop + hoop.offsetHeight / 2;
-    const hoopRadius = 50; // Adjust based on the visual center area of the hoop
-    const collisionBuffer = 5; // Narrower passable area for increased difficulty
+    const hoopWidth = hoop.offsetWidth;
+    const hoopHeight = hoop.offsetHeight;
+    // Define the vertical safe zone as a percentage of the hoop's height
+    const safeZoneHeightPercentage = 0.3; // 30% of the hoop's height is safe zone
+    const safeZoneHeight = hoopHeight * safeZoneHeightPercentage;
 
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
@@ -21,16 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Existing helper functions (lerp, shortestAngleDist, toRadians, toDegrees)
 
-    function checkCollisionWithHoop(x, y) {
-        const dx = x - hoopCenterX;
-        const dy = y - hoopCenterY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance < hoopRadius + collisionBuffer && distance > hoopRadius - collisionBuffer) {
-            return 'bounce';
-        } else if (distance <= hoopRadius - collisionBuffer) {
-            return 'safe';
-        }
-        return 'none';
+    function isInSafeZone(x, y) {
+        // Check if within vertical bounds of the safe zone
+        const isWithinVerticalBounds = y > (hoopCenterY - safeZoneHeight / 2) && y < (hoopCenterY + safeZoneHeight / 2);
+        // Check if within horizontal bounds of the hoop itself
+        const isWithinHorizontalBounds = x > (hoopCenterX - hoopWidth / 2) && x < (hoopCenterX + hoopWidth / 2);
+
+        return isWithinVerticalBounds && isWithinHorizontalBounds;
     }
 
     function updateSpaceship() {
@@ -38,26 +36,21 @@ document.addEventListener('DOMContentLoaded', () => {
         let dy = mouseY - currentY;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distance > movementThreshold) {
-            currentX += dx * lerpFactor;
-            currentY += dy * lerpFactor;
-        }
+        // Update position
+        currentX += dx * lerpFactor;
+        currentY += dy * lerpFactor;
 
         targetAngle = Math.atan2(dy, dx);
         let currentAngleRadians = toRadians(angle);
         let rotationStep = shortestAngleDist(currentAngleRadians, targetAngle);
-        let rotationDelta = toDegrees(rotationStep) * rotationLerpFactor;
+        angle += toDegrees(rotationStep) * rotationLerpFactor;
 
-        if (Math.abs(rotationDelta) > rotationThreshold || distance > movementThreshold) {
-            angle += rotationDelta;
-        }
-
-        const collision = checkCollisionWithHoop(currentX, currentY);
-        if (collision === 'bounce') {
-            // Smoother bounce effect with damping
-            const bounceFactor = 0.05; // Reduce for a softer bounce
-            dx *= -bounceFactor;
-            dy *= -bounceFactor;
+        // Collision detection
+        if (!isInSafeZone(currentX, currentY)) {
+            // Implement a smoother bounce logic here
+            // Reverse direction with damping to prevent glitching
+            dx *= -0.1; // Damping factor for horizontal direction
+            dy *= -0.1; // Damping factor for vertical direction
             currentX += dx;
             currentY += dy;
         }
